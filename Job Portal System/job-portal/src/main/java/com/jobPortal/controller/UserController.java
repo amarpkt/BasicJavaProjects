@@ -3,9 +3,11 @@ package com.jobPortal.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.jobPortal.model.User;
@@ -38,6 +40,21 @@ public class UserController {
 		}else {
 			return ResponseEntity.status(401).body("Invalid Creds");
 		}
+	}
+	
+	@GetMapping("/getUser/{email}")
+	public ResponseEntity<String> getUser(@PathVariable String email){
+		User fetchUser = userService.fetchUser(email);
+		if(fetchUser != null) {
+			System.out.println("User Details fetched Successfull");
+			System.out.println(fetchUser);
+			userService.addLoginDetails(fetchUser);
+			return ResponseEntity.ok("User Details fetch Successfull and log added in table LOGIN_LOG");
+		}else {
+			System.out.println("Email ID does not exists");
+			return ResponseEntity.status(401).body("Email ID does not exists");
+		}
+		
 	}
 	
 }

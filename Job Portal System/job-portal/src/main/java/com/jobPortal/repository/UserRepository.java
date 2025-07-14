@@ -46,7 +46,6 @@ public class UserRepository {
 	}
 	
 	public User findByEmail(String email) {
-		
 		String sql = "SELECT * FROM USERS where email = ? ";
 		try(Connection conn = datasource.getConnection();
 			PreparedStatement ps = conn.prepareStatement(sql);){
@@ -70,4 +69,30 @@ public class UserRepository {
 		}
 		return null;
 	}
+	
+	public void addLoginDetails(User user) {
+		String sql = "INSERT INTO LOGIN_LOG (userName, email, enabled, dateTime_Logged) VALUES (?,?,?,GETDATE() )";
+		
+		try(
+				Connection conn = datasource.getConnection();
+				PreparedStatement ps = conn.prepareStatement(sql);){
+				
+				ps.setString(1, user.getUserName());
+				ps.setString(2, user.getEmail());
+				ps.setBoolean(3, user.isEnabled());
+				
+				int rows = ps.executeUpdate();
+				if(rows > 0) {
+					System.out.println("User Login DateTime added in DB");
+				}else {
+					System.out.println("Details not added");
+					return;
+				}
+				
+			}catch(SQLException e) {
+				e.printStackTrace();
+			}
+		
+	}
+	
 }

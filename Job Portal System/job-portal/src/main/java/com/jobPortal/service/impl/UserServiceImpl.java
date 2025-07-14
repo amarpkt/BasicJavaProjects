@@ -29,4 +29,18 @@ public class UserServiceImpl implements UserService{
 		}
 		return null;
 	}
+	
+	@Override
+	public User fetchUser(String email) {
+		User user = userRepository.findByEmail(email);
+		if(user!=null && user.getEmail().equals(email)) {
+			return user;
+		}
+		return null;
+	}
+	
+	@Override
+	public void addLoginDetails(User user) {
+		userRepository.addLoginDetails(user);
+	}
 }

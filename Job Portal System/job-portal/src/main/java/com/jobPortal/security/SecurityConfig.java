@@ -13,7 +13,7 @@ public class SecurityConfig {
 	        http
 	            .csrf(csrf -> csrf.disable()) // Disable CSRF for testing
 	            .authorizeHttpRequests(auth -> auth
-	                .requestMatchers("/api/users/register","/api/users/test","/api/users/login").permitAll() // Allow registration without auth
+	                .requestMatchers("/api/users/register","/api/users/test","/api/users/login", "/api/users/getUser/**").permitAll() // Allow registration without auth
 	                .anyRequest().authenticated() // Secure all other endpoints
 	            )
 	            .httpBasic(); // Use Basic Auth for protected endpoints
